@@ -8,30 +8,8 @@ import pandas as pd
 import math
 import sys
 
-if len(sys.argv) < 2:
-    quit("Require input file")
-
-fileIn = sys.argv[1]
-
-pathToImages = 'images'
-
-def findLabel(path):
-    # pull label from image path i.e. images/_label_/image.jpg
-    return path.split('/')[1]
-
-def annotation(row):
-    # create annotation
-    height = row['yMax'] - row['yMin']
-    width = row['xMax'] - row['xMin']
-    x = row['xMin'] + math.floor(width / 2)
-    y = row['yMin'] + math.floor(height / 2)
-
-    props = {'label': item['label'], 'type': 'rectangle'}
-    props['coordinates'] = {'height': height, 'width': width, 'x': x, 'y': y}
-    return [props]
-
 # Load images
-data = tc.image_analysis.load_images(pathToImages, with_path=True)
+data = tc.image_analysis.load_images("./training", with_path=True)
 
 csv = pd.read_csv(fileIn, names = ["image", "id", "label", "xMin", "xMax", "yMin", "yMax"])
 # From the path-name, create a label column
